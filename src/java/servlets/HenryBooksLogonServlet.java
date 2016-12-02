@@ -1,6 +1,7 @@
 
 package servlets;
 
+import business.Store;
 import business.User;
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -30,6 +32,7 @@ public class HenryBooksLogonServlet extends HttpServlet
         String msg = "", sql = "", userID = "";
         long passattempt;
         User user;
+        Store store;
         
         String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
         String dbUser = "root";
@@ -52,6 +55,19 @@ public class HenryBooksLogonServlet extends HttpServlet
                     user.setUserName(resultSet.getString("userName"));
                     user.setStoreID(resultSet.getLong("storeID"));
                     user.setAdminLevel(resultSet.getString("adminLevel"));
+                    // Build the store dropdown list
+                    String storeListSql = "SELECT * FROM Stores";
+                    Connection storeConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+                    Statement storeStatement = storeConnection.createStatement();
+                    ResultSet resultSetStores = storeStatement.executeQuery(storeListSql);
+                    ArrayList<Store> stores = new ArrayList<>();
+                    while (resultSetStores.next()) {
+                        Store s = new Store(
+                                resultSetStores.getLong("storeID"),
+                                resultSetStores.getString("storeName"));
+                        stores.add(s);
+                    }
+                    request.setAttribute("stores", stores);
                     URL = "/StoreSelection.jsp";
                     msg = "Member successfully authenticated! <br>";
                 } else {

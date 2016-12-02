@@ -4,19 +4,10 @@
  <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Member Welcome</title>
+        <title>Inventory</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://use.fontawesome.com/ea6070bed7.js"></script>
-        <style>
-            table.member-details{
-                border-collapse: collapse;
-            }
-            table.member-details td, table.member-details th{
-                padding: 6px;
-                border: 1px solid #999;
-            }
-        </style>
     </head>
     <c:if test="${!user.authenticated}">
         <script type="text/javascript">
@@ -33,32 +24,37 @@
                 <br>
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>${user}</h4>
-                        <form id="memupdate" action="MemberUpdate" method="post" class="form-horizontal">
+                        
+                        
+                        <form id="memupdate" action="MemberUpdate" method="post" class="">
                             <div class="form-group">
-                                <label for="firstname" class="col-sm-4 control-label">User ID</label>
-                                <div class="col-sm-8">
-                                  <input class="form-control" type="text" id="firstname" name="firstname"
-                                         value="${user.userId}" readonly="true">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <h4>${user}</h4>
+                                    <hr>
                                 </div>
                             </div>
+                                
                             <div class="form-group">
-                                <label for="memid" class="col-sm-4 control-label">User Name</label>
-                                <div class="col-sm-8">
-                                  <input class="form-control" type="text" id="memid" name="memid"
-                                           value="${user.userName}" readonly="true">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <br>
+                                <label for="firstname" class="control-label">Select Your Store</label>
+                                <br>
+                                <div class="">
+                                    <select class="form-control">
+                                        <c:forEach var="s" items="${stores}">
+                                            <option value="${s.storeID}">${s.storeName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                                 </div>
                             </div>
+                            
+
+                         
                             <div class="form-group">
-                                <label for="lastname" class="col-sm-4 control-label">Amin Level</label>
-                                <div class="col-sm-8">
-                                  <input class="form-control" type="text" id="lastname" name="lastname"
-                                         value="${user.adminLevel}" readonly="true">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-4 col-sm-6">
-                                  <button type="submit" class="btn btn-primary">Update Member Data</button>
+                                <div class="col-sm-3 col-sm-offset-6">
+                                    <br>
+                                  <button type="submit" class="btn btn-primary">View/Edit Inventory</button>
                                 </div>
                             </div>
                         </form>
@@ -70,33 +66,11 @@
                     </div
                 </div>
                            
-                <div class="row">
-                    <div class="col-sm-12 col-sm-offset-1">
-                        <br>
-                        <h4>View Transaction History From</h4>
-                        <form action="ShowPurchases" method="post" class="form-inline">
-                            <div class="form-group">
-                                <label for="month">Month</label>
-                                <input type="text" class="form-control" id="month" name="month" placeholder="">
-                            </div>
-                            <div class="form-group">
-                                <label for="day">Day</label>
-                                <input type="text" class="form-control" id="day" name="day" placeholder="">
-                            </div>
-                            <div class="form-group">
-                                <label for="year">Year</label>
-                                <input type="text" class="form-control" id="year" name="year" placeholder="">
-                            </div>
-                            <button type="submit" class="btn btn-success">View Transactions</button>
-                        </form>  
-                    </div>
-                </div>
-                <br>
                 </div>
                 <div>
                     <br>
                     <h5>
-                        <a href="/ClubDB_Arcelo">&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-circle-left"></i>&nbsp;Back to the Login Screen</a>
+                        <a href="/HenryBpoks_Arcelo">&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-circle-left"></i>&nbsp;Back to the Login Screen</a>
                     </h5>
                 </div>              
             </div>
