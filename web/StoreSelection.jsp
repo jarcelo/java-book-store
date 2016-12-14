@@ -26,7 +26,7 @@
                     <div class="col-sm-6">
                         
                         
-                        <form id="memupdate" action="MemberUpdate" method="post" class="">
+                        <form id="memupdate" action="BookInventory" method="post" class="">
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-2">
                                     <h4>${user}</h4>
@@ -37,20 +37,18 @@
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-2">
                                     <br>
-                                <label for="firstname" class="control-label">Select Your Store</label>
+                                <label for="store" class="control-label">Select Your Store</label>
                                 <br>
                                 <div class="">
-                                    <select class="form-control">
+                                    <select class="form-control" id="store" name="store">
                                         <c:forEach var="s" items="${stores}">
-                                            <option value="${s.storeID}">${s.storeName}</option>
+                                            <option id="storeName" name="storeName"  ${s.storeID == user.storeID? 'Selected' : ''}
+                                                    value="${s.storeID}">${s.storeName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 </div>
                             </div>
-                            
-
-                         
                             <div class="form-group">
                                 <div class="col-sm-3 col-sm-offset-6">
                                     <br>
@@ -70,7 +68,7 @@
                 <div>
                     <br>
                     <h5>
-                        <a href="/HenryBpoks_Arcelo">&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-circle-left"></i>&nbsp;Back to the Login Screen</a>
+                        <a href="/HenryBooks_Arcelo">&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-circle-left"></i>&nbsp;Back to the Login Screen</a>
                     </h5>
                 </div>              
             </div>
