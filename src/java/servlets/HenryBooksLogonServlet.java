@@ -67,7 +67,8 @@ public class HenryBooksLogonServlet extends HttpServlet
                                 resultSetStores.getString("storeName"));
                         stores.add(s);
                     }
-                    request.setAttribute("stores", stores);
+                    //request.setAttribute("stores", stores);
+                    request.getSession().setAttribute("stores", stores);
                     URL = "/StoreSelection.jsp";
                     msg = "Member successfully authenticated! <br>";
                 } else {
