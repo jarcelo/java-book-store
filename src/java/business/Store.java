@@ -63,4 +63,14 @@ public class Store
     {
         this.numberOfEmployees = numberOfEmployees;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Branch Number: " + this.storeID + "<br>" +
+               "Branch Name: " + this.storeName + "<br>" +
+               "Branch Location: " + this.storeAddress);
+    }
+    
+    
 }
