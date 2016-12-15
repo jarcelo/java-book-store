@@ -4,6 +4,18 @@
         <servlet-name>HenryBooksLogonServlet</servlet-name>
         <servlet-class>servlets.HenryBooksLogonServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookInventoryServlet</servlet-name>
+        <servlet-class>servlets.BookInventoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateInventoryServlet</servlet-name>
+        <servlet-class>servlets.UpdateInventoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateBookOnHandServlet</servlet-name>
+        <servlet-class>servlets.UpdateBookOnHandServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HenryBooksLogonServlet</servlet-name>
         <url-pattern>/HenryBooksLogon</url-pattern>
@@ -11,6 +23,18 @@
     <welcome-file-list>
         <welcome-file>Logon.jsp</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>BookInventoryServlet</servlet-name>
+        <url-pattern>/BookInventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateInventoryServlet</servlet-name>
+        <url-pattern>/UpdateInventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateBookOnHandServlet</servlet-name>
+        <url-pattern>/UpdateBookOnHand</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
