@@ -1,11 +1,11 @@
 
 package servlets;
 
+import business.ConnectionPool;
 import business.Inventory;
 import business.Store;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -35,9 +35,9 @@ public class BookInventoryServlet extends HttpServlet
         String sqlInventoryQuery = "";
         Store store = null;
         
-        String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
-        String dbUser = "root";
-        String dbPwd = "uftbutefade1";
+        //String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
+        //String dbUser = "root";
+        //String dbPwd = "uftbutefade1";
         // get the inventories of the selected branch
         try {
             //String action = request.getParameter("actiontype");
@@ -48,8 +48,10 @@ public class BookInventoryServlet extends HttpServlet
             
             // write query for the store details
             sqlStoreQuery = "SELECT * FROM stores WHERE storeID = '" + storeId + "'";
-            Connection storeConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-            Statement storeStatement = storeConnection.createStatement();
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            //Connection storeConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+            Statement storeStatement = conn.createStatement();
             ResultSet storeResultSet = storeStatement.executeQuery(sqlStoreQuery);
             if (storeResultSet.next()) {
                 store = new Store();
@@ -66,8 +68,9 @@ public class BookInventoryServlet extends HttpServlet
                                 "WHERE bookinv.bookID = booklist.bookID AND bookinv.storeID = '" + storeId + "' " +
                                 "ORDER BY bookID";
             
-            Connection inventoryConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-            Statement inventoryStatement = inventoryConnection.createStatement();
+            //Connection inventoryConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+            //Statement inventoryStatement = inventoryConnection.createStatement();
+            Statement inventoryStatement = conn.createStatement();
             ResultSet inventoryResultSet = inventoryStatement.executeQuery(sqlInventoryQuery);
 
             ArrayList<Inventory> invs = new ArrayList<>();

@@ -1,10 +1,10 @@
 
 package servlets;
 
+import business.ConnectionPool;
 import business.Store;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
@@ -29,11 +29,7 @@ public class UpdateBookOnHandServlet extends HttpServlet
         String bookName = "";
         int storeID = 0;
         String updateBookCountSQL = "";
-        
-        String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
-        String dbUser = "root";
-        String dbPwd = "uftbutefade1";
-        
+              
         int newBookCount = 0;
         try {
             Store store = (Store) request.getSession().getAttribute("store");
@@ -57,7 +53,8 @@ public class UpdateBookOnHandServlet extends HttpServlet
                                  " onHand = ? " + 
                                  " WHERE bookID = ? AND storeID = ? ";
 
-                        Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+                        ConnectionPool pool = ConnectionPool.getInstance();
+                        Connection conn = pool.getConnection();
                         PreparedStatement ps = conn.prepareStatement(updateBookCountSQL);
                         ps.setInt(1, newBookCount);
                         ps.setString(2, bookId);

@@ -1,6 +1,7 @@
 
 package servlets;
 
+import business.ConnectionPool;
 import business.Store;
 import business.User;
 import java.io.IOException;
@@ -33,17 +34,19 @@ public class HenryBooksLogonServlet extends HttpServlet
         long passattempt;
         User user = null;
         
-        String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
-        String dbUser = "root";
-        String dbPwd = "uftbutefade1";
+        //String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
+        //String dbUser = "root";
+        //String dbPwd = "uftbutefade1";
         
         try {
             userID = request.getParameter("userid").trim();
             passattempt = Long.parseLong(request.getParameter("password").trim());
             
             sql = "SELECT * FROM users WHERE userID = '" + userID + "'";
-            Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-            Statement statement = connection.createStatement();
+            //Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 user = new User();
@@ -57,8 +60,9 @@ public class HenryBooksLogonServlet extends HttpServlet
                     user.setAdminLevel(resultSet.getString("adminLevel"));
                     // Build the store dropdown list
                     String storeListSql = "SELECT * FROM Stores";
-                    Connection storeConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-                    Statement storeStatement = storeConnection.createStatement();
+                    //Connection storeConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+                    //Statement storeStatement = storeConnection.createStatement();
+                    Statement storeStatement = conn.createStatement();
                     ResultSet resultSetStores = storeStatement.executeQuery(storeListSql);
                     ArrayList<Store> stores = new ArrayList<>();
                     while (resultSetStores.next()) {

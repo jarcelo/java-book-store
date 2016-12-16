@@ -2,6 +2,7 @@
 package servlets;
 
 import business.Book;
+import business.ConnectionPool;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,10 +31,6 @@ public class UpdateInventoryServlet extends HttpServlet
         String bookId = "";
         String selectBookSQL = "";
         
-        String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
-        String dbUser = "root";
-        String dbPwd = "uftbutefade1";
-        
         Book book = null;
         try {
             bookId = request.getParameter("bookCode");
@@ -43,8 +40,10 @@ public class UpdateInventoryServlet extends HttpServlet
             else {
                 selectBookSQL = "SELECT * FROM booklist " +
                                 "WHERE bookID ='" + bookId +"'";
-                Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-                Statement statement = connection.createStatement();
+                
+                ConnectionPool pool = ConnectionPool.getInstance();
+                Connection conn = pool.getConnection();
+                Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery(selectBookSQL);
 
                 if (resultSet.next()) {
