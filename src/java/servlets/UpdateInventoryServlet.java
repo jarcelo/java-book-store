@@ -5,7 +5,6 @@ import business.Book;
 import business.ConnectionPool;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -57,14 +56,12 @@ public class UpdateInventoryServlet extends HttpServlet
             if (!msg.isEmpty()) {
                 URL = "/StoreSelection.jsp";
             }
-            //msg = "Book ID Selected " + bookId;
-            // retrieve the current book quantity from the selected branch
+            //TODO retrieve the current book quantity from the selected branch
         } catch(SQLException e) {
             msg = "SQL Exception " + e.getMessage();
         } catch (Exception e) {
             msg = "Error: " + e.getMessage();
         }
-        //request.setAttribute("book", book);
         request.getSession().setAttribute("book", book);
         request.setAttribute("msg", msg);
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
