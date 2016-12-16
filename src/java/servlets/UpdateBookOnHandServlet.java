@@ -1,9 +1,7 @@
 
 package servlets;
 
-import business.Book;
 import business.Store;
-import business.User;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,37 +39,48 @@ public class UpdateBookOnHandServlet extends HttpServlet
             Store store = (Store) request.getSession().getAttribute("store");
             bookId = request.getParameter("bookID");
             bookName = request.getParameter("title");
-            User user = (User) request.getSession().getAttribute("user");
-            newBookCount = Integer.parseInt(request.getParameter("quantity"));
-            storeID = (int)(store.getStoreID());
-            updateBookCountSQL = "UPDATE bookinv SET " +
-                     " onHand = ? " + 
-                     " WHERE bookID = ? AND storeID = ? ";
-            
-            Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-            PreparedStatement ps = conn.prepareStatement(updateBookCountSQL);
-            ps.setInt(1, newBookCount);
-            ps.setString(2, bookId);
-            ps.setInt(3, storeID);
-                
-            int rc = ps.executeUpdate();
-            
-            if (rc == 0) {
-                msg += "Update failed: no changes <br>.";
-            } else if (rc == 1) {
-                msg += "Inventory for " + bookName + " at " + store.getStoreName() + " branch was successfully updated.<br>";
-            } else {
-                msg += "Warning: " + rc + " records updated.<br>";
+            String inputQuantity = request.getParameter("quantity").trim();
+            try {
+                if (inputQuantity.isEmpty()) {
+                    msg += "* Please enter quantity<br>";
+                    URL = "/Update.jsp";
+                }
+                else {
+                    newBookCount = Integer.parseInt(inputQuantity);
+                    if (newBookCount < 0) {
+                        msg += "* Quantity must not be negative.";
+                        URL = "/Update.jsp";
+                    }
+                    else {
+                        storeID = (int)(store.getStoreID());
+                        updateBookCountSQL = "UPDATE bookinv SET " +
+                                 " onHand = ? " + 
+                                 " WHERE bookID = ? AND storeID = ? ";
+
+                        Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+                        PreparedStatement ps = conn.prepareStatement(updateBookCountSQL);
+                        ps.setInt(1, newBookCount);
+                        ps.setString(2, bookId);
+                        ps.setInt(3, storeID);
+
+                        int rc = ps.executeUpdate();
+
+                        if (rc == 0) {
+                            msg += "Update failed: no changes <br>.";
+                        } else if (rc == 1) {
+                            msg += "Inventory for <em>" + bookName + "</em> at " + store.getStoreName() + " branch was successfully updated.<br>";
+                        } else {
+                            msg += "Warning: " + rc + " records updated.<br>";
+                        }
+                    }
+                }
+            } catch(SQLException e) {
+                msg += "SQL Error: " + e.getMessage() + "<br>";
+            } catch (Exception e) {
+                msg += "Input error. Please enter a nonnegative number to update inventory. <br>";
             }
-            
-            request.setAttribute("bookId", bookId);
-            request.setAttribute("quantity", newBookCount);
-            request.setAttribute("userStoreId", storeID);
-            
-        } catch(SQLException e) {
-            msg += "SQL Error: " + e.getMessage() + "<br>";
         } catch (Exception e) {
-            msg += "Update Error.";
+            msg += "Update failed." + e.getMessage();
         }
         request.setAttribute("msg", msg);
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
