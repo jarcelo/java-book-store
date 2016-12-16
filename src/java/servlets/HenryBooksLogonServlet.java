@@ -32,7 +32,6 @@ public class HenryBooksLogonServlet extends HttpServlet
         String msg = "", sql = "", userID = "";
         long passattempt;
         User user;
-        Store store;
         
         String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
         String dbUser = "root";
@@ -67,10 +66,9 @@ public class HenryBooksLogonServlet extends HttpServlet
                                 resultSetStores.getString("storeName"));
                         stores.add(s);
                     }
-                    //request.setAttribute("stores", stores);
                     request.getSession().setAttribute("stores", stores);
                     URL = "/StoreSelection.jsp";
-                    msg = "Member successfully authenticated! <br>";
+                    msg = "User successfully authenticated! <br>";
                 } else {
                     msg = "Login failure. Member cannot be authenticated. <br>";
                 }
