@@ -36,28 +36,35 @@ public class UpdateInventoryServlet extends HttpServlet
         
         Book book = null;
         try {
-            
             bookId = request.getParameter("bookCode");
-            selectBookSQL = "SELECT * FROM booklist " +
-                            "WHERE bookID ='" + bookId +"'";
-            Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(selectBookSQL);
-            
-            if (resultSet.next()) {
-                 book = new Book();
-                 book.setBookId(resultSet.getString("bookID"));
-                 book.setTitle(resultSet.getString("title"));
-                 book.setAuthor(resultSet.getString("author")); 
+            if (bookId.isEmpty()) {
+                msg += "Viewing book details failed. BookID is invalid or empty.<br>";
             }
-            msg = "Book ID Selected " + bookId;
-           
+            else {
+                selectBookSQL = "SELECT * FROM booklist " +
+                                "WHERE bookID ='" + bookId +"'";
+                Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(selectBookSQL);
+
+                if (resultSet.next()) {
+                     book = new Book();
+                     book.setBookId(resultSet.getString("bookID"));
+                     book.setTitle(resultSet.getString("title"));
+                     book.setAuthor(resultSet.getString("author")); 
+                }
+            }
+            
+            if (!msg.isEmpty()) {
+                URL = "/StoreSelection.jsp";
+            }
+            //msg = "Book ID Selected " + bookId;
+            // retrieve the current book quantity from the selected branch
         } catch(SQLException e) {
             msg = "SQL Exception " + e.getMessage();
         } catch (Exception e) {
             msg = "Error: " + e.getMessage();
         }
-        request.setAttribute("bookId", bookId);
         request.setAttribute("book", book);
         request.setAttribute("msg", msg);
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
