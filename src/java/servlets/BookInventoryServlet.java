@@ -1,7 +1,6 @@
 
 package servlets;
 
-import business.Book;
 import business.Inventory;
 import business.Store;
 import java.io.IOException;
@@ -28,9 +27,10 @@ public class BookInventoryServlet extends HttpServlet
     {
         response.setContentType("text/html;charset=UTF-8");
         String URL = "/Inventory.jsp";
+        //String URL = "/StoreSelection.jsp";
         String msg = "";
         String storeId = "";
-        String storeName = "";
+        //String storeName = "";
         String sqlStoreQuery = "";
         String sqlInventoryQuery = "";
         Store store = null;
@@ -40,10 +40,12 @@ public class BookInventoryServlet extends HttpServlet
         String dbPwd = "uftbutefade1";
         // get the inventories of the selected branch
         try {
+            //String action = request.getParameter("actiontype");
             //Store s = (Store) request.getSession().getAttribute("s");
             storeId = request.getParameter("store");
-            storeName = request.getParameter("storeName");
+            //storeName = request.getParameter("storeName");
             msg += "Store ID: " + storeId;
+            
             // write query for the store details
             sqlStoreQuery = "SELECT * FROM stores WHERE storeID = '" + storeId + "'";
             Connection storeConnection = DriverManager.getConnection(dbURL, dbUser, dbPwd);
@@ -79,9 +81,12 @@ public class BookInventoryServlet extends HttpServlet
                 invs.add(i);
             }
             inventoryResultSet.last();
-            request.setAttribute("invs", invs);
-            String itemCount = inventoryResultSet.getRow() + " books found!";
-            request.setAttribute("count", itemCount);
+    
+            //String itemCount = inventoryResultSet.getRow() + " books found!";
+            //request.setAttribute("count", itemCount);
+            
+            request.setAttribute("invs", invs);    
+            
         } catch (Exception e) {
             msg += "Error: " + e.getMessage();
         }
