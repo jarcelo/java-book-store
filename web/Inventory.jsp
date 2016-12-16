@@ -13,6 +13,12 @@
                 integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <title>Inventory</title>
     </head>
+    <c:if test="${!user.authenticated}">
+        <script type="text/javascript">
+            window.location = "/HenryBooks_Arcelo";
+        </script>
+    </c:if>
+    <c:if test="${user.authenticated}">
     <body>
         <div class="container">
             <div class="panel panel-info">
@@ -37,7 +43,7 @@
                                         <input type="text" class="form-control" id="bookCode" name="bookCode"
                                                    placeholder="Book Code" value="" >
                                     </div>
-                                    <button type="submit" class="btn btn-info">&nbsp; Edit Record &nbsp;</button>
+                                    <button type="submit" class="btn btn-warning">&nbsp; Edit Record &nbsp;</button>
                                 </form>
                             </div>
                         </c:if>
@@ -69,4 +75,5 @@
         </div>
         <br>
     </body>
+    </c:if> 
 </html>

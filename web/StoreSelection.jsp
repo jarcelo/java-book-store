@@ -73,7 +73,6 @@
                         </form>
                     </div> <!-- /col-sm-6 -->
                     <div class="col-sm-6">
-                        <br>
                         <div class="alert alert-warning" role="alert">
                             ${msg}
                         </div>  

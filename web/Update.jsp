@@ -14,6 +14,12 @@
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://use.fontawesome.com/ea6070bed7.js"></script>
     </head>
+    <c:if test="${!user.authenticated}">
+        <script type="text/javascript">
+            window.location = "/HenryBooks_Arcelo";
+        </script>
+    </c:if>
+    <c:if test="${user.authenticated}">
     <body>
         <div class="container">
             <div class="panel panel-primary">
@@ -27,20 +33,18 @@
                         <br>
                         <br>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <br>
                         <br>
                         <ul class="list-group">
                             <li class="list-group-item disabled">${user} </li>
-                            <li class="list-group-item">Branch No: ${store.storeID} </li>
-                            <li class="list-group-item">Branch Name: ${store.storeName}</li>
-                            <li class="list-group-item">Address: ${store.storeAddress}</li>
+                            <li class="list-group-item">${store}</li>
                         </ul>
                     </div>
                 </div>
                         
                 <div class="row">
-                    <div class="col-sm-4 col-sm-offset-4">
+                    <div class="col-sm-6 col-sm-offset-2">
                         <hr>
                         <form action="UpdateBookOnHand" method="post" class="">
                             <div class="form-group col-sm-12">
@@ -55,14 +59,14 @@
                                            readonly="true" value="${book.author}" >
                                 <br>
                                 <hr>
-
+                                <p class="text-danger">${msg}</p>
                                 <label for="quantity">Inventory On Hand In Branch</label>
                                 <input type="number" class="form-control" id="quantity" name="quantity"
-                                           placeholder="Quantity" value="" >
+                                           placeholder="Quantity" value="0" >
                                 <br>
                                 <br>
                                 <button type="submit" class="btn btn-info">&nbsp; Update Inventory &nbsp;</button>
-                                <a href="/HenryBooks_Arcelo/StoreSelection.jsp" class="btn btn-info" role="button">&nbsp; Cancel &nbsp;</a>
+                                <a href="/HenryBooks_Arcelo/StoreSelection.jsp" class="btn btn-warning" role="button">&nbsp; Cancel &nbsp;</a>
                             </div>
                         </form>
                     </div>
@@ -71,4 +75,5 @@
             </div>
         </div>
     </body>
+    </c:if>  
 </html>
