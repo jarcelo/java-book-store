@@ -16,12 +16,12 @@ public class User
 
     public User()
     {
+        userId = 0;
         userName = "";
         adminLevel = "";
         userPassword = 0;
         passwordAttempt = 0;
         storeId = 0;
-        adminLevel = "";
     }
     
     public double getUserId()
