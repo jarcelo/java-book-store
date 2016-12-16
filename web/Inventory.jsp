@@ -15,28 +15,34 @@
     </head>
     <body>
         <div class="container">
-            <div class="panel panel-primary">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="text-center">&nbsp;Inventory View/Update</h3>
                 </div>
-                <div class="col-sm-10 col-sm-offset-1">
-                    <h5>${user}</h5>
-                    <h5>${store}</h5>
-                    <br>
+                <div class="row">
+                    <div class="col-sm-5 col-sm-offset-1">
+                        <br>
+                        <h5>${user}</h5>
+                        <h5>${store}</h5>
+                    </div>
+                    <div class="col-sm-6">
+                         <c:if test="${user.adminLevel == 'Admn'}">
+                            <div>
+                                <br>
+                                <br>
+                                <br>
+                                <form action="UpdateInventory" method="post" class="form-inline col-sm-10 col-sm-offset-1">
+                                    <div class="form-group">
+                                        <label for="bookCode">Book Code</label>
+                                        <input type="text" class="form-control" id="bookCode" name="bookCode"
+                                                   placeholder="Book Code" value="" >
+                                    </div>
+                                    <button type="submit" class="btn btn-info">&nbsp; Edit Record &nbsp;</button>
+                                </form>
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
-                <c:if test="${user.adminLevel == 'Admn'}">
-                <div>
-                    <form action="UpdateInventory" method="post" class="form-inline col-sm-10 col-sm-offset-1">
-                        <div class="form-group">
-                            <label for="bookCode">Book Code</label>
-                            <input type="text" class="form-control" id="bookCode" name="bookCode"
-                                       placeholder="Book Code" value="" >
-                        </div>
-                        <button type="submit" class="btn btn-info">&nbsp; Edit Record &nbsp;</button>
-                    </form>
-                </div>
-                </c:if>
-                <br>
                 <div> 
                     <br>
                     <br>
@@ -59,8 +65,8 @@
                        </c:forEach>
                     </table>
                 </div>
-                <h1>${count}</h1>
             </div>
         </div>
+        <br>
     </body>
 </html>

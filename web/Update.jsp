@@ -16,52 +16,58 @@
     </head>
     <body>
         <div class="container">
-            <div class="row">
-                <div class="col-sm-8">
-                    <h1 class="text-warning text-center"><i class="fa fa-book fa-3x"></i></h1>
-                    <h2 class="text-center">Update Inventory</h1>
-                    <br>
-                    <br>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="text-center">&nbsp;Update Inventory</h3>
                 </div>
-                <div class="col-sm-4">
-                    <br>
-                    <br>
-                    <ul class="list-group">
-                        <li class="list-group-item disabled">${user} </li>
-                        <li class="list-group-item">Branch No: ${store.storeID} </li>
-                        <li class="list-group-item">Branch Name: ${store.storeName}</li>
-                        <li class="list-group-item">Address: ${store.storeAddress}</li>
-                    </ul>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1 class="text-warning text-center"><i class="fa fa-book fa-3x"></i></h1>
+                        <h2 class="text-center">Update Inventory</h1>
+                        <br>
+                        <br>
+                    </div>
+                    <div class="col-sm-4">
+                        <br>
+                        <br>
+                        <ul class="list-group">
+                            <li class="list-group-item disabled">${user} </li>
+                            <li class="list-group-item">Branch No: ${store.storeID} </li>
+                            <li class="list-group-item">Branch Name: ${store.storeName}</li>
+                            <li class="list-group-item">Address: ${store.storeAddress}</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-         
-            <div class="row">
-                <hr>
-                <div class="col-sm-6 col-sm-offset-3">
-                    <form action="UpdateBookOnHand" method="post" class="">
-                        <div class="form-group col-sm-12">
-                            <label for="bookID">Book ID</label>
-                            <input type="text" class="form-control" id="bookID" name="bookID"
-                                       readonly="true" value="${book.bookId}" >
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" name="title"
-                                       readonly="true" value="${book.title}" >
-                            <label for="author">Author</label>
-                            <input type="text" class="form-control" id="author" name="author"
-                                       readonly="true" value="${book.author}" >
-                            <br>
-                            <hr>
                         
-                            <label for="quantity">Inventory On Hand In Branch</label>
-                            <input type="text" class="form-control" id="quantity" name="quantity"
-                                       placeholder="Quantity" value="" >
-                            <br>
-                            <br>
-                            <button type="submit" class="btn btn-info">&nbsp; Update Inventory &nbsp;</button>
-                            <a href="/HenryBooks_Arcelo/StoreSelection.jsp" class="btn btn-info" role="button">&nbsp; Cancel &nbsp;</a>
-                        </div>
-                    </form>
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <hr>
+                        <form action="UpdateBookOnHand" method="post" class="">
+                            <div class="form-group col-sm-12">
+                                <label for="bookID">Book ID</label>
+                                <input type="text" class="form-control" id="bookID" name="bookID"
+                                           readonly="true" value="${book.bookId}" >
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                           readonly="true" value="${book.title}" >
+                                <label for="author">Author</label>
+                                <input type="text" class="form-control" id="author" name="author"
+                                           readonly="true" value="${book.author}" >
+                                <br>
+                                <hr>
+
+                                <label for="quantity">Inventory On Hand In Branch</label>
+                                <input type="number" class="form-control" id="quantity" name="quantity"
+                                           placeholder="Quantity" value="" >
+                                <br>
+                                <br>
+                                <button type="submit" class="btn btn-info">&nbsp; Update Inventory &nbsp;</button>
+                                <a href="/HenryBooks_Arcelo/StoreSelection.jsp" class="btn btn-info" role="button">&nbsp; Cancel &nbsp;</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+                <br>
             </div>
         </div>
     </body>

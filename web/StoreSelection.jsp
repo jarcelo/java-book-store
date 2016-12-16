@@ -1,6 +1,20 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE>
+<!DOCTYPE html>
+            <script src="ajax.js" type="text/javascript"></script>
+            <script src="inventory.js" type="text/javascript"></script>
+            <script language="javascript" type="text/javascript">
+                function pageAction()
+                {
+                    var x = document.getElementById("store").value;
+                    if (ajax) {
+                        ajax.open('GET', 'BookInventory?store=' + x);
+                        ajax.send(null);
+                    } else {
+                        document.inventory.submit();
+                    }
+                }
+            </script>
  <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,18 +29,17 @@
         </script>
     </c:if>
     <c:if test="${user.authenticated}">
-        <body class="container">
+        <body>
+            <div class="container">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="text-center">&nbsp;Inventory View/Update</h1>
+                    <h3 class="text-center">&nbsp;Store Selection</h1>
                 </div>
                 <br>
                 <br>
                 <div class="row">
                     <div class="col-sm-6">
-                        
-                        
-                        <form id="memupdate" action="BookInventory" method="post" class="">
+                        <form action="BookInventory" method="post" name="inventory" id="inventory">
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-2">
                                     <h4>${user}</h4>
@@ -52,29 +65,37 @@
                             <div class="form-group">
                                 <div class="col-sm-3 col-sm-offset-6">
                                     <br>
-                                  <button type="submit" class="btn btn-primary">View/Edit Inventory</button>
+                                  <button type="button" class="btn btn-primary" name="showInventory" id="showInventory" 
+                                          onclick="pageAction()">View/Edit Inventory</button>
                                 </div>
                             </div>
+                            <input type="hidden" name="store" id="store" value="">
                         </form>
-                    </div>
+                    </div> <!-- /col-sm-6 -->
                     <div class="col-sm-6">
                         <br>
-                        <br>
+                        <div class="alert alert-warning" role="alert">
+                            ${msg}
+                        </div>  
                         <h1 class="text-primary text-center"><i class="fa fa-id-card-o fa-5x"></i></h1>
-                    </div
-                </div>
+                    </div <!-- col-sm-6 -->
+                </div><!-- /row -->    
+                
+                <div id="resul">
+                </div> <!-- /results -->
                            
-                </div>
                 <div>
                     <br>
                     <h5>
-                        <a href="/HenryBooks_Arcelo">&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-circle-left"></i>&nbsp;Back to the Login Screen</a>
+                        <a href="/HenryBooks_Arcelo">&nbsp;&nbsp;&nbsp;<i class="fa fa-undo"></i>&nbsp;Back to the Login Screen</a>
                     </h5>
                 </div>              
-            </div>
-            <div class="alert alert-info" role="alert">
-                ${msg}
+            </div> 
+            </div><!-- /container -->
+            <div>
+                <div id="results">
+                </div> <!-- /results -->  
             </div>
         </body>
-    </c:if>
+    </c:if>  
 </html>
