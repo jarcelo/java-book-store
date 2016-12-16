@@ -65,7 +65,8 @@ public class UpdateInventoryServlet extends HttpServlet
         } catch (Exception e) {
             msg = "Error: " + e.getMessage();
         }
-        request.setAttribute("book", book);
+        //request.setAttribute("book", book);
+        request.getSession().setAttribute("book", book);
         request.setAttribute("msg", msg);
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
         disp.forward(request, response);
