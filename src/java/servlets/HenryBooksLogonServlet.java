@@ -31,7 +31,7 @@ public class HenryBooksLogonServlet extends HttpServlet
         String URL = "/Logon.jsp";
         String msg = "", sql = "", userID = "";
         long passattempt;
-        User user;
+        User user = null;
         
         String dbURL = "jdbc:mysql://localhost:3306/HenryBooks_IS288";
         String dbUser = "root";
@@ -48,6 +48,7 @@ public class HenryBooksLogonServlet extends HttpServlet
             if (resultSet.next()) {
                 user = new User();
                 user.setUserId(Long.parseLong(userID));
+                //user.setUserId(Integer.parseInt(userID));
                 user.setUserPassword(resultSet.getLong("userPassword"));
                 user.setPasswordAttempt(passattempt);
                 if (user.isAuthenticated()) {
@@ -83,7 +84,7 @@ public class HenryBooksLogonServlet extends HttpServlet
         }
         request.setAttribute("msg", msg);
         // Add cookie for userID
-        Cookie uid = new Cookie("user", userID);
+        Cookie uid = new Cookie("userid", userID);
         uid.setMaxAge(60*10);
         uid.setPath("/");
         response.addCookie(uid);
