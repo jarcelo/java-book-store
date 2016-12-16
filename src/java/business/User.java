@@ -20,7 +20,7 @@ public class User
         userName = "";
         adminLevel = "";
         userPassword = 0;
-        passwordAttempt = 0;
+        passwordAttempt = -1;
         storeId = 0;
     }
     
