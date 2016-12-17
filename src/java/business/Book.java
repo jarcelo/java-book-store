@@ -1,18 +1,36 @@
 
 package business;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author josepharcelo
  */
+@Entity(name = "Book")
+@Table(name = "booklist")
 public class Book
 {
+    @Id
+    @Column(name = "bookID")
     private String bookId;
+    
+    @Column(name = "title")
     private String title;
+    
+    @Column(name = "author")
     private String author;
+    
+    @Column(name = "publisher_Code")
     private String publisherCode;
+    
+    @Column(name = "booktype")
     private String bookType;
-    //private long price;
+    
+    @Column(name = "price")
     private Double price;
 
     public Book()
