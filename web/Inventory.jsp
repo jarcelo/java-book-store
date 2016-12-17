@@ -42,6 +42,7 @@
                                         <label for="bookCode">Book Code</label>
                                         <input type="text" class="form-control" id="bookCode" name="bookCode"
                                                    placeholder="Book Code" value="" >
+                                        <input class="hidden form-control" id="storeId" name="storeId" value="${store.storeID}"> 
                                     </div>
                                     <button type="submit" class="btn btn-warning">&nbsp; Edit Record &nbsp;</button>
                                 </form>
