@@ -1,15 +1,30 @@
 
 package business;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author josepharcelo
  */
+@Entity(name = "Stores")
+@Table(name="stores")
 public class Store
 {
+    @Id
+    @Column(name = "storeID")
     private long storeID;
+    
+    @Column(name = "storeName")
     private String storeName;
+    
+    @Column(name = "storeAddr")
     private String storeAddress;
+    
+    @Column(name = "storeEmp")
     private long numberOfEmployees;
     
     public Store(){
