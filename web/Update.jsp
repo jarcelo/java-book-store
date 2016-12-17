@@ -62,7 +62,7 @@
                                 <p class="text-danger">${msg}</p>
                                 <label for="quantity">Inventory On Hand In Branch</label>
                                 <input type="number" class="form-control" id="quantity" name="quantity"
-                                           placeholder="Quantity" value="0" >
+                                           placeholder="Quantity" value="${bookCount}" >
                                 <br>
                                 <br>
                                 <button type="submit" class="btn btn-info">&nbsp; Update Inventory &nbsp;</button>
