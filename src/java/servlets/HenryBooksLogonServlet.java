@@ -1,15 +1,13 @@
 
 package servlets;
 
-import business.ConnectionPool;
 import business.Store;
+import business.StoreDB;
 import business.User;
+import business.UserDB;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -32,58 +30,34 @@ public class HenryBooksLogonServlet extends HttpServlet
         String msg = "", sql = "", userID = "";
         long passattempt;
         User user = null;
-        
+     
         try {
             userID = request.getParameter("userid").trim();
             passattempt = Long.parseLong(request.getParameter("password").trim());
-            
-            sql = "SELECT * FROM users WHERE userID = '" + userID + "'";
-            
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
-            
-            if (resultSet.next()) {
-                user = new User();
-                user.setUserId(Long.parseLong(userID));
-                user.setUserPassword(resultSet.getLong("userPassword"));
-                user.setPasswordAttempt(passattempt);
-                if (user.isAuthenticated()) {
-                    user.setUserName(resultSet.getString("userName"));
-                    user.setStoreID(resultSet.getLong("storeID"));
-                    user.setAdminLevel(resultSet.getString("adminLevel"));
-                    
-                    // Build the store dropdown list
-                    String storeListSql = "SELECT * FROM Stores";
-                    
-                    Statement storeStatement = conn.createStatement();
-                    ResultSet resultSetStores = storeStatement.executeQuery(storeListSql);
-                    ArrayList<Store> stores = new ArrayList<>();
-                    while (resultSetStores.next()) {
-                        Store s = new Store(
-                                resultSetStores.getLong("storeID"),
-                                resultSetStores.getString("storeName"));
-                        stores.add(s);
-                    }
-                    request.getSession().setAttribute("stores", stores);
-                    URL = "/StoreSelection.jsp";
-                    msg = "User successfully authenticated! <br>";
-                } else {
-                    msg = "Login failure. Member cannot be authenticated. <br>";
-                }
-                request.getSession().setAttribute("user", user);
-            } else {
-                msg = "Login failure. Userid not found.<br>";
+            user = UserDB.getMemberById(Long.parseLong(userID));
+            if (user == null) {
+                msg = "User can't be found.";
             }
-            
-            pool.freeConnection(conn);
-            
-        } catch(NumberFormatException e) {
-            msg = "Login failure. Please enter correct information.<br>";
-        } catch(SQLException e) {
-            msg += "SQL Exception: " + e.getMessage() + "<br>";
+            else {
+                user.setPasswordAttempt(passattempt);
+                if (!user.isAuthenticated()) {
+                    msg = "Member found but not authenticated";
+                }
+                else {
+                    msg = "Member authenticated";
+                    URL = "/StoreSelection.jsp";
+                    request.getSession().setAttribute("user", user);
+                    // get the store list
+                    List<Store> stores = new ArrayList<>();
+                    stores = StoreDB.getStores();
+                    request.getSession().setAttribute("stores", stores);
+                }
+            }
+        } 
+        catch(Exception e) {
+             msg = "Servlet error :" + e.getMessage();
         }
+        
         request.setAttribute("msg", msg);
         // Add cookie for userID
         Cookie uid = new Cookie("userid", userID);
