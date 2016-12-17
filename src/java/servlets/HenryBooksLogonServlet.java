@@ -76,6 +76,9 @@ public class HenryBooksLogonServlet extends HttpServlet
             } else {
                 msg = "Login failure. Userid not found.<br>";
             }
+            
+            pool.freeConnection(conn);
+            
         } catch(NumberFormatException e) {
             msg = "Login failure. Please enter correct information.<br>";
         } catch(SQLException e) {

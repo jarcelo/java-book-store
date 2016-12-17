@@ -33,16 +33,25 @@ public class UpdateInventoryServlet extends HttpServlet
         Book book = null;
         try {
             bookId = request.getParameter("bookCode");
+            //check if book ID matches with what's on the database
+            String bookIDsSQL = "SELECT * from bookinv WHERE bookID = '" + bookId + "'";
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            Statement statement = conn.createStatement();
+            
+            ResultSet bookIDResultSet = statement.executeQuery(bookIDsSQL);
             if (bookId.isEmpty()) {
-                msg += "Viewing book details failed. BookID is invalid or empty.<br>";
+                msg = "Viewing book details failed. BookID is invalid or empty.<br>";
             }
-            else {
+            else if (!bookIDResultSet.next()) {
+                msg = "Sorry, no match found for the bookID you entered.";
+            }else {
                 selectBookSQL = "SELECT * FROM booklist " +
                                 "WHERE bookID ='" + bookId +"'";
                 
-                ConnectionPool pool = ConnectionPool.getInstance();
-                Connection conn = pool.getConnection();
-                Statement statement = conn.createStatement();
+                //ConnectionPool pool = ConnectionPool.getInstance();
+                //Connection conn = pool.getConnection();
+                //Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery(selectBookSQL);
 
                 if (resultSet.next()) {
@@ -51,12 +60,25 @@ public class UpdateInventoryServlet extends HttpServlet
                      book.setTitle(resultSet.getString("title"));
                      book.setAuthor(resultSet.getString("author")); 
                 }
+                
+                String storeId = request.getParameter("storeId");
+                String currentInventorySQL = "SELECT onHand from bookinv " 
+                       + " WHERE bookID = '" +  bookId + "' AND storeID = '" + storeId + "'"; 
+                Statement currentInventoryStatement = conn.createStatement();
+                ResultSet currentInventoryResultSet = currentInventoryStatement.executeQuery(currentInventorySQL);
+                int bookCount = 0;
+                if (currentInventoryResultSet.next()) {
+                    bookCount = currentInventoryResultSet.getInt("onHand");
+                }
+                request.setAttribute("bookCount", bookCount);
             }
             
             if (!msg.isEmpty()) {
                 URL = "/StoreSelection.jsp";
             }
-            //TODO retrieve the current book quantity from the selected branch
+            
+            pool.freeConnection(conn);
+            
         } catch(SQLException e) {
             msg = "SQL Exception " + e.getMessage();
         } catch (Exception e) {

@@ -65,10 +65,12 @@ public class UpdateBookOnHandServlet extends HttpServlet
                         if (rc == 0) {
                             msg += "Update failed: no changes <br>.";
                         } else if (rc == 1) {
-                            msg += "Inventory for <em>" + bookName + "</em> at " + store.getStoreName() + " branch was successfully updated.<br>";
+                            msg += "Inventory for <em>" + bookName + "</em> at " + store.getStoreName() + " branch was successfully updated<br>";
                         } else {
                             msg += "Warning: " + rc + " records updated.<br>";
                         }
+                        
+                        pool.freeConnection(conn);
                     }
                 }
             } catch(SQLException e) {

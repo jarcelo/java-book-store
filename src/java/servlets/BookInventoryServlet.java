@@ -75,6 +75,8 @@ public class BookInventoryServlet extends HttpServlet
     
             request.setAttribute("invs", invs);    
             
+            pool.freeConnection(conn);
+            
         } catch (Exception e) {
             msg += "Error: " + e.getMessage();
         }
