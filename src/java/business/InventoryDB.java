@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -28,7 +27,6 @@ public class InventoryDB
     
     public static List<Inventory> getInventory(long storeID) {
         entityManager =  DBUtil.getEmFactory().createEntityManager();
-       // String queryString = "SELECT p FROM Stores p";
         String queryString = "SELECT i.storeId, i.bookId, b.title, b.price, i.numberOfBooksOnHand " +
                                 "FROM Inventory i, Book b " +
                                 "WHERE i.bookId = b.bookId AND i.storeId = :storeID " +
@@ -86,7 +84,6 @@ public class InventoryDB
                                  "i.numberOfBooksOnHand = :quantity " + 
                                  "WHERE i.bookId = :bID AND i.storeId = :sID";
         TypedQuery<Integer> query = entityManager.createQuery(queryString, Integer.class);
-        //query.setParameter(1, quantity).setParameter(2, bID).setParameter(3, sID);
         query.setParameter("quantity", quantity);
         query.setParameter("bID", bID);
         query.setParameter("sID", sID);
@@ -96,26 +93,6 @@ public class InventoryDB
             trans.begin();
             updatedRows = query.executeUpdate();
             trans.commit();
-        }
-        catch (Exception e) {
-            trans.rollback();
-            updatedRows = 0;
-        }
-        finally {
-            entityManager.close();
-        }
-        return updatedRows;
-    }
-    
-    public static int updateInventoryInstance(Inventory inventory){
-        entityManager = DBUtil.getEmFactory().createEntityManager();
-        EntityTransaction trans = entityManager.getTransaction();
-        int updatedRows;
-        try {
-            trans.begin();
-            entityManager.merge(inventory);
-            trans.commit();
-            updatedRows = 1;
         }
         catch (Exception e) {
             trans.rollback();
