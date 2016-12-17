@@ -1,12 +1,9 @@
 
 package servlets;
 
-import business.ConnectionPool;
+import business.InventoryDB;
 import business.Store;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,56 +24,43 @@ public class UpdateBookOnHandServlet extends HttpServlet
         String msg = "";
         String bookId = "";
         String bookName = "";
-        int storeID = 0;
-        String updateBookCountSQL = "";
-              
-        int newBookCount = 0;
+        long storeID = 0;
+        long newBookCount = 0;
+        
         try {
             Store store = (Store) request.getSession().getAttribute("store");
             bookId = request.getParameter("bookID");
             bookName = request.getParameter("title");
             String inputQuantity = request.getParameter("quantity").trim();
+            
             try {
                 if (inputQuantity.isEmpty()) {
                     msg += "* Please enter quantity<br>";
                     URL = "/Update.jsp";
                 }
                 else {
-                    newBookCount = Integer.parseInt(inputQuantity);
+                    newBookCount = Long.parseLong(inputQuantity);
                     if (newBookCount < 0) {
                         msg += "* Quantity must not be negative.";
                         URL = "/Update.jsp";
                     }
                     else {
-                        storeID = (int)(store.getStoreID());
-                        updateBookCountSQL = "UPDATE bookinv SET " +
-                                 " onHand = ? " + 
-                                 " WHERE bookID = ? AND storeID = ? ";
-
-                        ConnectionPool pool = ConnectionPool.getInstance();
-                        Connection conn = pool.getConnection();
-                        PreparedStatement ps = conn.prepareStatement(updateBookCountSQL);
-                        ps.setInt(1, newBookCount);
-                        ps.setString(2, bookId);
-                        ps.setInt(3, storeID);
-
-                        int rc = ps.executeUpdate();
-
-                        if (rc == 0) {
-                            msg += "Update failed: no changes <br>.";
-                        } else if (rc == 1) {
-                            msg += "Inventory for <em>" + bookName + "</em> at " + store.getStoreName() + " branch was successfully updated<br>";
-                        } else {
-                            msg += "Warning: " + rc + " records updated.<br>";
+                        storeID = (long)(store.getStoreID());
+                        int rowsUpdated = InventoryDB.updateBookOnHandInventory(newBookCount, bookId, storeID);
+                        if (rowsUpdated == 1) {
+                            msg += "Inventory for <em>" + bookName + "</em> at " + store.getStoreName() + 
+                                    " branch was successfully updated<br>";
                         }
-                        
-                        pool.freeConnection(conn);
+                        else if (rowsUpdated == 0) {
+                            msg += "Update failed: no changes made<br>";
+                        }
+                        else {
+                            msg += "Warning: " + rowsUpdated + " records updated.<br>";
+                        }
                     }
                 }
-            } catch(SQLException e) {
-                msg += "SQL Error: " + e.getMessage() + "<br>";
             } catch (Exception e) {
-                msg += "Input error. Please enter a nonnegative number to update inventory. <br>";
+                msg += "Error processing input: " + e.getMessage();
             }
         } catch (Exception e) {
             msg += "Update failed." + e.getMessage();
