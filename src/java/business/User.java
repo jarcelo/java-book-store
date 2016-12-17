@@ -1,17 +1,37 @@
 
 package business;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  *
  * @author josepharcelo
  */
+@Entity
+@Table(name="users")
 public class User
 {
+    @Id
+    @Column(name= "userID")
     private long userId;
+    
+    @Column(name = "userName")
     private String userName;
+    
+    @Column(name = "userPassword")
     private long userPassword;
+    
+    @Transient
     private long passwordAttempt;
+    
+    @Column(name = "storeID")
     private long storeId;
+    
+    @Column(name = "adminLevel")
     private String adminLevel;
 
     public User()
