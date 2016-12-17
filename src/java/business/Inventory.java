@@ -3,18 +3,40 @@ package business;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author josepharcelo
  */
+@Entity(name = "Inventory")
+@Table(name = "bookinv")
 public class Inventory
 {
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long inventoryID;
+    
+    @Column(name = "bookID")
     private String bookId;
+    
+    @Column(name = "storeID")
     private long storeId;
+    
+    @Column(name = "OnHand")
     private long numberOfBooksOnHand;
     
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bookID", insertable = false, updatable = false)
     private Book book;
 
     public Inventory()
@@ -59,7 +81,7 @@ public class Inventory
     {
         return storeId;
     }
-
+    
     public void setStoreId(long storeId)
     {
         this.storeId = storeId;
