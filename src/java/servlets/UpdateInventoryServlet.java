@@ -49,9 +49,6 @@ public class UpdateInventoryServlet extends HttpServlet
                 selectBookSQL = "SELECT * FROM booklist " +
                                 "WHERE bookID ='" + bookId +"'";
                 
-                //ConnectionPool pool = ConnectionPool.getInstance();
-                //Connection conn = pool.getConnection();
-                //Statement statement = conn.createStatement();
                 ResultSet resultSet = statement.executeQuery(selectBookSQL);
 
                 if (resultSet.next()) {
