@@ -1,14 +1,11 @@
 
 package servlets;
 
-import business.ConnectionPool;
 import business.Inventory;
+import business.InventoryDB;
 import business.Store;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,53 +26,16 @@ public class BookInventoryServlet extends HttpServlet
         String URL = "/Inventory.jsp";
         String msg = "";
         String storeId = "";
-        String sqlStoreQuery = "";
-        String sqlInventoryQuery = "";
         Store store = null;
         
         try {
             storeId = request.getParameter("store");
-            msg += "Store ID: " + storeId;
-            
-            sqlStoreQuery = "SELECT * FROM stores WHERE storeID = '" + storeId + "'";
-            
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();
-            Statement storeStatement = conn.createStatement();
-            ResultSet storeResultSet = storeStatement.executeQuery(sqlStoreQuery);
-            
-            if (storeResultSet.next()) {
-                store = new Store();
-                store.setStoreID(Long.parseLong(storeId));
-                store.setStoreName(storeResultSet.getString("storeName"));
-                store.setStoreAddress(storeResultSet.getString("storeAddr"));
-            }
-            
+            store = InventoryDB.getStoreById(Long.parseLong(storeId));
             request.getSession().setAttribute("store", store);
-            
-            sqlInventoryQuery = "SELECT bookinv.storeID, bookinv.bookID, booklist.title, booklist.price, bookinv.OnHand " +
-                                "FROM bookinv, booklist " +
-                                "WHERE bookinv.bookID = booklist.bookID AND bookinv.storeID = '" + storeId + "' " +
-                                "ORDER BY bookID";
-            
-            Statement inventoryStatement = conn.createStatement();
-            ResultSet inventoryResultSet = inventoryStatement.executeQuery(sqlInventoryQuery);
 
-            ArrayList<Inventory> invs = new ArrayList<>();
-            while (inventoryResultSet.next()) {
-                Inventory i = new Inventory();
-                i.setStoreId(inventoryResultSet.getLong("storeID"));
-                i.setBookId(inventoryResultSet.getString("bookID"));
-                i.setNumberOfBooksOnHand(inventoryResultSet.getLong("OnHand"));
-                i.setBookTitle(inventoryResultSet.getString("title"));
-                i.setPrice(inventoryResultSet.getString("price"));
-                invs.add(i);
-            }
-            inventoryResultSet.last();
-    
+            List<Inventory> invs;
+            invs = InventoryDB.getInventory(Long.parseLong(storeId));
             request.setAttribute("invs", invs);    
-            
-            pool.freeConnection(conn);
             
         } catch (Exception e) {
             msg += "Error: " + e.getMessage();
