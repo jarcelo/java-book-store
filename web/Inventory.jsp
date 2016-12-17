@@ -63,11 +63,11 @@
                         </tr>
                         <c:forEach var="i" items="${invs}">
                         <tr>
-                            <td class="text-left">${i.storeId}</td>
-                            <td class="text-left">${i.bookId}</td>
-                            <td class="text-left">${i.bookTitle}</td>
-                            <td class="text-left">${i.price}</td>
-                            <td class="text-left">${i.numberOfBooksOnHand}</td>
+                            <td class="text-left">${i[0]}</td>
+                            <td class="text-left">${i[1]}</td>
+                            <td class="text-left">${i[2]}</td>
+                            <td class="text-left">${i[3]}</td>
+                            <td class="text-left">${i[4]}</td>
                         </tr>
                        </c:forEach>
                     </table>
