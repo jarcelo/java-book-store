@@ -12,11 +12,15 @@ import javax.persistence.TypedQuery;
  * @author josepharcelo
  */
 public class InventoryDB
-{
-    private static EntityManager entityManager =  DBUtil.getEmFactory().createEntityManager();
+{  
+    private static EntityManager getNewEntityManager() {
+        return DBUtil.getEmFactory().createEntityManager();
+    }
     
+    private static EntityManager entityManager;
+      
     public static Store getStoreById(long storeID){
-        entityManager =  DBUtil.getEmFactory().createEntityManager();
+        entityManager = getNewEntityManager();
         try {
             Store store = entityManager.find(Store.class, storeID);
             return store;
@@ -26,7 +30,7 @@ public class InventoryDB
     }
     
     public static List<Inventory> getInventory(long storeID) {
-        entityManager =  DBUtil.getEmFactory().createEntityManager();
+        entityManager = getNewEntityManager();
         String queryString = "SELECT i.storeId, i.bookId, b.title, b.price, i.numberOfBooksOnHand " +
                                 "FROM Inventory i, Book b " +
                                 "WHERE i.bookId = b.bookId AND i.storeId = :storeID " +
@@ -49,7 +53,7 @@ public class InventoryDB
     }
     
     public static Book getBookById(String id) {
-        entityManager =  DBUtil.getEmFactory().createEntityManager();
+        entityManager =  getNewEntityManager();
         try {
             Book book = entityManager.find(Book.class, id);
             return book;
@@ -59,8 +63,7 @@ public class InventoryDB
     }
     
     public static long getBookOnHandInventory(String bID, long sID) {
-        entityManager =  DBUtil.getEmFactory().createEntityManager();
-        
+        entityManager = getNewEntityManager();
         String queryString = "SELECT i.numberOfBooksOnHand from Inventory i " +
                         "WHERE i.bookId = ?1 AND i.storeId = ?2 "; 
         TypedQuery<Long> query = entityManager.createQuery(queryString, Long.class);
@@ -78,7 +81,7 @@ public class InventoryDB
     }
     
     public static int updateBookOnHandInventory(long quantity, String bID, long sID){
-        entityManager = DBUtil.getEmFactory().createEntityManager();
+        entityManager = getNewEntityManager();
         EntityTransaction trans = entityManager.getTransaction();
         String queryString = "UPDATE Inventory i SET " +
                                  "i.numberOfBooksOnHand = :quantity " + 
