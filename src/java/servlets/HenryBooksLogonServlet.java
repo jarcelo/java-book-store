@@ -74,7 +74,7 @@ public class HenryBooksLogonServlet extends HttpServlet
                 }
                 request.getSession().setAttribute("user", user);
             } else {
-                msg = "Login failure. Userid not found.<br>";
+                msg = "Login failure. Userid cannot be found.<br>";
             }
             
             pool.freeConnection(conn);

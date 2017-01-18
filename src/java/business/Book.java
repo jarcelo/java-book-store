@@ -12,7 +12,6 @@ public class Book
     private String author;
     private String publisherCode;
     private String bookType;
-    //private long price;
     private Double price;
 
     public Book()
