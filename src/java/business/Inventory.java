@@ -55,8 +55,6 @@ public class Inventory
         this.numberOfBooksOnHand = numberOfBooksOnHand;
     }
     
-    
-
     public long getInventoryID()
     {
         return inventoryID;

@@ -27,7 +27,7 @@ public class HenryBooksLogonServlet extends HttpServlet
     {
         response.setContentType("text/html;charset=UTF-8");
         String URL = "/Logon.jsp";
-        String msg = "", sql = "", userID = "";
+        String msg = "", userID = "";
         long passattempt;
         User user = null;
      

@@ -23,10 +23,9 @@ public class UpdateInventoryServlet extends HttpServlet
         response.setContentType("text/html;charset=UTF-8");
         String URL = "/Update.jsp";
         String msg = "";
-        String bookId = "";
-        String selectBookSQL = "";
-        
+        String bookId = "";        
         Book book = null;
+        
         try {
             bookId = request.getParameter("bookCode");
             book = InventoryDB.getBookById(bookId);
